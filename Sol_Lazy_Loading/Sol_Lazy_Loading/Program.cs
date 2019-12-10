@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Sol_Lazy_Loading
 {
@@ -19,6 +20,8 @@ namespace Sol_Lazy_Loading
                 Console.WriteLine(names);
             }
 
+            string name = lazyOnDemand.FindName("Kishor").Value;
+            Console.WriteLine(name);
         }
     }
 
@@ -80,6 +83,24 @@ namespace Sol_Lazy_Loading
             listNames.Add("Kishor");
 
             return listNames;
+        }
+        #endregion
+
+        #region Public Method
+        public Lazy<string> FindName(string name)
+        {
+            return new Lazy<string>(() => {
+
+                var list = this.GetListOfNames();
+
+                var filterData =
+                    list
+                    ?.AsEnumerable()
+                    ?.SingleOrDefault((leStringName) => leStringName == name);
+                   
+                return filterData;
+            
+            });
         }
         #endregion 
     }
